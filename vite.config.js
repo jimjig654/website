@@ -5,7 +5,11 @@ import path from 'path';
 export const vitePort = 3000;
 
 export default defineConfig(({ mode }) => {
+  // Set base URL for GitHub Pages
+  const base = process.env.NODE_ENV === 'production' ? '/website/' : '/';
+  
   return {
+    base,
     plugins: [
       react(),
       // Custom plugin to handle source map requests

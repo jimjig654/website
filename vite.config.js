@@ -8,8 +8,15 @@ export default defineConfig(({ mode }) => {
   // Set base URL for GitHub Pages
   const base = process.env.NODE_ENV === 'production' ? '/website/' : '/';
   
+  // Set the output directory for the build
+  const outDir = 'dist';
+  
   return {
     base,
+    build: {
+      outDir,
+      emptyOutDir: true,
+    },
     plugins: [
       react(),
       // Custom plugin to handle source map requests

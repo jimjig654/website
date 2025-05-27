@@ -1,0 +1,48 @@
+# My Personal Website
+
+A clean, modern, and responsive personal website built with HTML, CSS, and vanilla JavaScript. Hosted on GitHub Pages.
+
+## Features
+
+- Responsive design that works on all devices
+- Smooth scrolling navigation
+- Modern UI with clean animations
+- Easy to customize and extend
+- No build step required
+
+## Getting Started
+
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/yourusername/your-repo.git
+   cd your-repo
+   ```
+
+2. Open `index.html` in your browser to view the website locally.
+
+## Customization
+
+- Update the content in `index.html`
+- Modify the styling in `styles.css`
+- Add interactivity in `script.js`
+- Replace the logo and images in the `images` folder
+
+## Deployment
+
+This website is set up to be deployed to GitHub Pages automatically:
+
+1. Push your code to the `main` branch of your GitHub repository
+2. Go to your repository settings
+3. Navigate to "Pages" under "Code and automation"
+4. Select the `main` branch and the `/ (root)` folder
+5. Click "Save"
+
+Your site will be live at `https://yourusername.github.io/your-repo/`
+
+## License
+
+This project is open source and available under the [MIT License](LICENSE).
+
+---
+
+Created with ❤️ by [Your Name] - [yourwebsite.com](https://yourwebsite.com)

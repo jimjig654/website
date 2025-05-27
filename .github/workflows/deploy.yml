@@ -10,6 +10,7 @@ permissions:
   contents: read
   pages: write
   id-token: write
+  deployments: write
 
 # Allow one concurrent deployment
 concurrency:
@@ -26,11 +27,26 @@ jobs:
       
       - name: Enable GitHub Pages
         run: |
-          curl -X POST \
+          # First, try to get the current Pages configuration
+          response=$(curl -s -w "%{http_code}" -o /tmp/pages.json \
             -H "Accept: application/vnd.github.v3+json" \
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            https://api.github.com/repos/${{ github.repository }}/pages \
-            -d '{"build_type":"workflow","source":{"branch":"main"}}'
+            https://api.github.com/repos/${{ github.repository }}/pages)
+          
+          http_code=${response: -3}
+          
+          # If Pages is not configured (404), enable it
+          if [ "$http_code" = "404" ]; then
+            echo "GitHub Pages is not enabled. Enabling it now..."
+            curl -X POST \
+              -H "Accept: application/vnd.github.v3+json" \
+              -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+              https://api.github.com/repos/${{ github.repository }}/pages \
+              -d '{"build_type":"workflow","source":{"branch":"main","path":"/"}}' \
+              -f || echo "Failed to enable GitHub Pages (might already be enabled)"
+          else
+            echo "GitHub Pages is already configured."
+          fi
         continue-on-error: true
 
       - name: Set up Node.js

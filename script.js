@@ -165,3 +165,112 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 1000);
     }
 });
+
+// Cursor Trail Effect
+class ParticleTrail {
+    constructor() {
+        this.particles = [];
+        this.mouseX = 0;
+        this.mouseY = 0;
+        
+        // Create canvas
+        this.canvas = document.createElement('canvas');
+        this.ctx = this.canvas.getContext('2d');
+        this.canvas.style.position = 'fixed';
+        this.canvas.style.top = '0';
+        this.canvas.style.left = '0';
+        this.canvas.style.pointerEvents = 'none';
+        this.canvas.style.zIndex = '1500';
+        document.body.appendChild(this.canvas);
+        
+        this.resizeCanvas();
+        window.addEventListener('resize', () => this.resizeCanvas());
+        
+        // Mouse move listener
+        document.addEventListener('mousemove', (e) => {
+            this.mouseX = e.clientX;
+            this.mouseY = e.clientY;
+            this.addParticle();
+        });
+        
+        this.animate();
+    }
+    
+    resizeCanvas() {
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
+    }
+    
+    addParticle() {
+        const colors = ['#ff2a6d', '#05d9e8', '#d300c5', '#00ff9f'];
+        this.particles.push({
+            x: this.mouseX,
+            y: this.mouseY,
+            size: Math.random() * 3 + 2,
+            speedX: (Math.random() - 0.5) * 2,
+            speedY: (Math.random() - 0.5) * 2,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            life: 1
+        });
+    }
+    
+    animate() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        
+        // Update and draw particles
+        for (let i = this.particles.length - 1; i >= 0; i--) {
+            const p = this.particles[i];
+            p.life -= 0.02;
+            p.x += p.speedX;
+            p.y += p.speedY;
+            p.size *= 0.95;
+            
+            this.ctx.beginPath();
+            this.ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            this.ctx.fillStyle = p.color + Math.floor(p.life * 255).toString(16).padStart(2, '0');
+            this.ctx.fill();
+            
+            if (p.life <= 0 || p.size < 0.5) {
+                this.particles.splice(i, 1);
+            }
+        }
+        
+        requestAnimationFrame(() => this.animate());
+    }
+}
+
+// Initialize cursor trail effect and audio player
+document.addEventListener('DOMContentLoaded', () => {
+    new ParticleTrail();
+    
+    // Audio player setup
+    const audio = document.getElementById('bgMusic');
+    const playPauseBtn = document.getElementById('playPauseBtn');
+    
+    playPauseBtn.addEventListener('click', () => {
+        if (audio.paused) {
+            audio.play();
+            playPauseBtn.textContent = 'Pause Music';
+            playPauseBtn.classList.add('playing');
+        } else {
+            audio.pause();
+            playPauseBtn.textContent = 'Play Music';
+            playPauseBtn.classList.remove('playing');
+        }
+    });
+    
+    // Add spans back after text content change
+    const updateButtonSpans = () => {
+        const spans = playPauseBtn.querySelectorAll('span');
+        if (spans.length === 0) {
+            for (let i = 0; i < 4; i++) {
+                const span = document.createElement('span');
+                playPauseBtn.appendChild(span);
+            }
+        }
+    };
+    
+    // Update button spans when text changes
+    const observer = new MutationObserver(updateButtonSpans);
+    observer.observe(playPauseBtn, { childList: true });
+});

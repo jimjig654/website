@@ -189,9 +189,10 @@ body::before {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     padding: 2rem;
+    padding-top: 15vh; /* This moves everything up */
 }
 
 /* Glitch Effect */
@@ -250,7 +251,7 @@ body::before {
     flex-wrap: wrap;
     justify-content: center;
     gap: 1.5rem;
-    margin-top: 2rem;
+    margin-top: 1rem; /* Reduced from 2rem */
 }
 
 .neon-button {
@@ -492,5 +493,35 @@ footer {
     
     section {
         padding: 3rem 1rem;
+    }
+}
+
+/* Audio Player */
+.audio-player {
+    margin-top: 1rem; /* Reduced from 2rem */
+    text-align: center;
+}
+
+.audio-player button {
+    margin: 0.5rem;
+}
+
+/* Add glow effect when playing */
+.playing {
+    animation: glow 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from {
+        text-shadow: 0 0 5px var(--neon-blue),
+                     0 0 10px var(--neon-blue),
+                     0 0 15px var(--neon-purple),
+                     0 0 20px var(--neon-purple);
+    }
+    to {
+        text-shadow: 0 0 10px var(--neon-blue),
+                     0 0 20px var(--neon-blue),
+                     0 0 30px var(--neon-purple),
+                     0 0 40px var(--neon-purple);
     }
 }
